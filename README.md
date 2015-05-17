@@ -1,2 +1,2 @@
 # ApisSinDolorDeCabezaSlides
-Spanish Slides for the Talk, APIs sin Dolores de cabeza (APIs wihouth headache)
+Spanish slides for the salk "APIs sin Dolores de cabeza· (APIs without headache)
