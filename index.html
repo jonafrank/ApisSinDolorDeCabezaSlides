@@ -110,6 +110,220 @@ for ($i = 0; $i < Config::get('seeding.users'); $i++) {
                 </pre>
             </section>
         </section>
+        <section>
+            <section>
+                <h2>Dise&ntilde;o de Endpoints</h2>
+                <p class="fragment">
+                    Los endpoints nos permitiran crear un CRUD, como si lo hicieramos en un CMS pero a traves de m&eacute;todos HTTP.
+                </p>
+                <p class="fragment">
+                    <strong>Endpoint:</strong> URL que permite realizar UNA acci&oacute;n (Crear, Leer, Actualizar o Borrar) un recurso.
+                </p>
+                <p class="fragment">
+                    Esto se hace a trav&eacute;es de los diferentes metodos HTTP:
+                </p>
+                <ul class="fragment">
+                    <li>GET</li>
+                    <li>POST</li>
+                    <li>PUT</li>
+                    <li>DELETE</li>
+                </ul>
+            </section>
+            <section>
+                <h3>GET Endpoints</h3>
+                <ul class="fragment" style="font-size: 80%;">
+                    <li class="spaced"><span class="monospace">GET /recursos </span> - Una lista paginada de cosas, con un orden l&oacute;gico para ese dato espec&iacute;fico.</li>
+                    <li class="spaced"><span class="monospace"> GET /recursos/X</span> - Solo la enidad X. Puede ser un ID, slug, hash, etc, siempre y cuando sea &uacute;nico.</li>
+                    <li class="spaced"><span class="monospace">GET /recursos/X,Y,Z</span> - El cliente quiere varias cosas, entonces se le da varias cosas.</li>
+                </ul>
+                <div class="clear"></div>
+                <ul class="fragment" style="font-size: 80%;">
+                    <li class="spaced"><span class="monospace">GET /places/X/checkins</span> - Encontrar todos los registros para un Lugar</li>
+                    <li class="spaced"><span class="monospace">GET /users/X/checkins</span> - Encontrar todos los registros de un Usuario</li>
+                    <li class="spaced"><span class="monospace">GET /users/X/checkins/Y</span> - Encontrar un registro espec&iacute;fico para un usario</li>
+                </ul>
+            </section>
+            <section>
+                <img src="resources/Warning.png" style="border: none; box-shadow: none">
+                <h3>Ojo con los Autoincrements</h3>
+            </section>
+            <section>
+                <h3>DELETE Endpoints</h3>
+                <ul>
+                    <li class="fragment"><span class="monospace">DELETE /places/X</span> - Borra un Lugar</li>
+                    <li class="fragment"><span class="monospace">DELETE /places/X,Y,Z</span> - Borra varios Lugares </li>
+                    <li class="fragment"><span class="monospace">DELETE /places</span> - Borra todos los lugares - Es peligroso implementarlo</li>
+                    <li class="fragment"><span class="monospace">DELETE /places/X/image</span> - Borra la imagen de un lugar, o</li>
+                    <li class="fragment"><span class="monospace">DELETE /places/X/images</span> - Si eligen que un lugar tenga muchas imagens, borra todas</li>
+                </ul>
+            </section>
+            <section>
+                <h3>POST Vs. PUT</h3>
+                <img src="resources/fight.png" class="fragment" style="border: none; box-shadow: none; background: none">
+            </section>
+            <section>
+                <p class="fragment">Hablando generalmente, Usamos PUT cuando conocemos la URL entera.</p>
+                <p class="fragment">Podemos Crear con un PUT si por ejemplo estamos creando UNA imagen para un Lugar</p>
+                <pre class="fragment">
+                    <code data-trim>
+PUT /places/1/image HTTP/1.1
+Host: example.com
+Content-Type: image/jpeg
+                    </code>
+                </pre>
+                <p class="fragment">Por eso usamos PUT para Actualizar un recurso del cual ya conocemos la URL completa</p>
+            </section>
+            <section>
+                <p>Pero generalmente no conocemos la Url completa. y para agregar nuevos Lugares devemos usar POST</p>
+                <pre>
+                    <code data-trim>
+POST /places HTTP/1.1
+Host: example.com
+Content-Type: image/jpeg
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h3>Plural, Singular o Ambos?</h3>
+                <img src="resources/lawrance.gif">
+            </section>
+            <section>
+                <h3>Verbo O sustantivo</h3>
+                <p>Traducionalmente las APIs consisitian en una serie de endpoints que describ&iacute;n acciones</p>
+                <pre>
+                    <code>
+POST /SendUserMessage HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+
+id=5&message=Hello!
+                    </code>
+                </pre>
+                <p class="fragment">Pero as&iacute; no hacemos las cosas en REST</p>
+            </section>
+            <section>
+                <p>Algunos programadores consideran el siguiente enfoque mas RESTful porque utiliza un "SubRecurso":</p>
+                <pre>
+                    <code>
+POST /users/5/send-message HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{ "message" : "Hello!" }
+                    </code>
+                </pre>
+                <p class="fragment">Nope. Porque sigue usando un verbo en la URL.</p>
+            </section>
+            <section>
+                <p>Un sustantivo es un "lugar" o una "cosa". Los recursos son "cosas", y una URL es el "Lugar" en la Internet donde esa "cosa" vive</p>
+                <div class="fragment">
+                    <p>Este ejemplo es considerablemente mas RESTful:</p>
+                    <pre>
+                        <code>
+POST /users/5/messages HTTP/1.1
+Host: example.com
+Content-Type: application/json
+
+{ "message" : "Hello!" }
+                        </code>
+                    </pre>
+                </div>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Entrada y Salida</h3>
+                <p>
+                    Si alguna vez les obligaron a trabajar con SOAP, seguro conocer&aacute;n todo acerca de los WSDLs. Si saben que son,
+                esten contentos porque no los vamos a usar mas. Si no tienen idea que es un WDSL entonces esten felices porque nunca tuvieron que aprender.
+
+                </p>
+                <p> En REST las entradas son puras request HTTP.</p>
+            </section>
+            <section>
+                <h2>Requests</h2>
+                <pre>
+                    <code>
+    GET /places?lat=40.759211&lon=-73.984638 HTTP/1.1
+    Host: api.example.com
+                    </code>
+                </pre>
+                <p class="fragment">Request simple que trae un lugar en base a su latitud y longitud. Esto es lo que el Browser hace cuando requerimos una URL</p>
+            </section>
+            <section>
+                <pre>
+                    <code>
+POST /moments/1/gift HTTP/1.1
+Host: api.example.com
+Authorization: Bearer vr5HmMkzlxKE70W1y4MibiJUusZwZC25NOVBEx3BD1
+Content-Type: application/json
+
+{ "user_id" : 2 }
+                    </code>
+                </pre>
+                <p>Este es un ejemplo de post, con un "HTTP Body", la linea en blanco separa los "HTTP Headers" del Body</p>
+            </section>
+            <section>
+                <h3>Responses</h3>
+                <p>Al igual que las request el browser, crear&aacute; las responses como texto plano.</p>
+                <pre>
+                    <code>
+HTTP/1.1 200 OK
+Server: nginx
+Content-Type: application/json
+Connection: close
+X-Powered-By: PHP/5.5.5-1+debphp.org~quantal+2
+Cache-Control: no-cache, private
+Date: Fri, 22 Nov 2013 16:37:57 GMT
+Transfer-Encoding: Identity
+
+{"id":1690,"is_gift":true,"user":{"id":1,"name":"Theron Weissnat","bio":"Occaecati exceptu\
+ri magni odio distinctio dolores illum voluptas voluptatem in repellendus eum enim ","gend\
+er":"female","picture_url":"https:\/\/si0.twimg.com\/profile_images\/711293289\/hhdl-twitt\
+er_normal.png","cover_url":null,"location":null,"timezone":-1,"birthday":"1989-09-17 16:27\
+:36","status":"available","created_at":"2013-11-22 16:37:57","redeem_by":"2013-12-22 16:37\
+:57"}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h3>Formatos</h3>
+                <div class="fragment">
+                    <h4>Form Data</h4>
+                    <img src="resources/no.gif" />
+                </div>
+            </section>
+            <section>
+                <h4>XML</h4>
+                <pre>
+                    <code data-trim class="xml">
+<places>
+    <place>
+        <id>1</id>,
+        <name>This is a bunch of text.</name>
+        <is_true>0</is_true>
+        <maybe />
+        <empty_string />
+    </place>
+</places>
+                    </code>
+                </pre>
+                <pre>
+                    <code data-trim class="xml">
+<places>
+    <place id="1" is_true="1">
+        <name>This is a bunch of text.</name>
+        <empty_string />
+    </place>
+</places>
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h4>JSON</h4>
+
+            </section>
+        </section>
 
     </div>
 

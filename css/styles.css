@@ -5,3 +5,13 @@
 p.social-info span {
     padding-left: 5px;
 }
+span.monospace {
+    font-family: monospace;
+    margin-right: 0.5em;
+}
+li.spaced {
+    margin-bottom: 0.2em;
+}
+div.clear {
+    height: 1em;
+}
