@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>reveal.js - The HTML Presentation Framework</title>
+    <title>APIs sin dolores de cabeza</title>
 
     <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
     <meta name="author" content="Hakim El Hattab">
@@ -321,10 +321,142 @@ er_normal.png","cover_url":null,"location":null,"timezone":-1,"birthday":"1989-0
             </section>
             <section>
                 <h4>JSON</h4>
-
+                <pre>
+                    <code data-trim class="json">
+{
+    "place": {
+        "id" : 1,
+        "name": "This is a bunch of text.",
+        "is_true": false,
+        "maybe": null,
+        "empty_string": ""
+    }
+}
+                    </code>
+                </pre>
             </section>
         </section>
+        <section>
+            <section>
+                <h2>Status Codes, Errores y Mensajes</h2>
+            </section>
+            <section>
+                <h3>HTTP status codes</h3>
+                <ul class="fragment">
+                    <li><strong>2xx</strong> Son c&oacute;digos de &eacute;xito</li>
+                    <li><strong>3xx</strong> Son c&oacute;digos de redirecci&oacute;n</li>
+                    <li><strong>4xx</strong> Son c&oacute;digos de error del lado del cliente</li>
+                    <li><strong>5xx</strong> Son c&oacute;digos de error del lado del servidor</li>
+                </ul>
+            </section>
+            <section>
+                <h3>C&oacute;digos comunes</h3>
+                <ul style="font-size: 70%">
+                    <li>200 - Gen&eacute;rico para todo esta OK</li>
+                    <li>201 - Algo fue creado correctamente</li>
+                    <li>202 - Aceptado pero esta siendo procesado asincronamente</li>
+                    <li>400 - "Bad Request" Es usado para mala sintaxis pero puede ser usado para validaci&oacute;</li>
+                    <li>401 - "Unauthorized" (No se provey&oacute; el usuario pero y es requerido)</li>
+                    <li>403 - "Forbidden" (El usuario no tiene autorizacion para acceder a ese endpoint)</li>
+                    <li>404 - La URL no es una ruta v&acute;lida</li>
+                    <li>405 - M&eacute;todo no permitido</li>
+                    <li>500 - Algo inesperado y es la culpa de la API</li>
+                    <li>503 - API temporablemente inaccesible</li>
+                </ul>
+            </section>
+            <section>
+                <h3>C&oacute;digos de error y mensajes</h3>
+                <pre class="fragment">
+                    <code data-trim class="json">
+{
+    "error": {
+        "type": "OAuthException",
+        "message": "Session has expired at unix time 1385243766.
+                    The current unix time is 1385848532."
+    }
+}
+                    </code>
+                </pre>
+                <pre class="fragment">
+                    <code data-trim class="json">
+{
+    "error": {
+        "type": "OAuthException",
+        "code": "ERR-01234",
+        "message": "Session has expired at unix time 1385243766.
+                        The current unix time is 1385848532."
+        "documentation_url": "http://example.com/docs/errors/#ERR-01234"
+    }
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Error o Errores</h2>
+                <img src="resources/errors.jpg">
+            </section>
+            <section>
+                <img src="resources/chuck.jpg">
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Recomendaciones Generales</h2>
+            </section>
+            <section>
+                <img src="resources/cache.jpg">
+            </section>
+            <section>
+                <h3>Usen Respuestas paginadas</h3>
+                <pre>
+                    <code data-trim class="json">
+{
+    "data": [
+        ...
+    ],
+    "pagination" : {
+        "total": 1000,
+        "count": 12,
+        "per_page": 12,
+        "current_page": 1,
+        "total_pages": 84,
+        "next_url": "https://api.example.com/places?page=2&number=12",
+    }
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h3>Usen Oauth 2.0 para la autenticaci&oacute;n</h3>
+                <pre>
+                    <code>
+POST /moments/1/gift HTTP/1.1
+Host: api.example.com
+Authorization: Bearer vr5HmMkzlxKE70W1y4MibiJUusZwZC25NOVBEx3BD1
+Content-Type: application/json
 
+{ "user_id" : 2 }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <p class="fragment">
+                    Si utilizan un ORM no serialicen la entidad directamente.<br>
+                    Si Usan acceso directo a datos no serialicen la tabla completa
+                </p>
+                <img src="resources/time.jpg" class="fragment">
+                <p class="fragment">
+                    T&oacute;mense el tiempo de diseñar y construir el json de respuesta que sea homogeneo entre todos sus endpoints.
+                </p>
+            </section>
+        </section>
+        <section>
+            <h3>Lectura Recomendada</h3>
+            <img src="resources/baywh.jpg">
+        </section>
+        <section>
+            <img src="resources/questions.jpg">
+        </section>
     </div>
 
 </div>
