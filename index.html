@@ -46,19 +46,34 @@
             <p class="social-info"><img src="resources/twitter.png" class="small-icon"><span>@jonatanfrank</span></p>
             <p class="social-info"><img src="resources/github.png" class="small-icon"><span>github.com/jonafrank</span></p>
         </section>
-
         <section>
-            <h2>Introducci&oacute;n</h2>
-            <p>Hoy d&iacute;a REST se convirti&oacute; en el standard para el desarrollo de API principalemte a:</p>
-            <ul>
-                <li class="fragment">Es f&aacute;cil de usar</li>
-                <li class="fragment">Es f&aacute;cil de desarrollar</li>
-                <li class="fragment">Uso completo del protocolo HTTP</li>
-                <li class="fragment">Todo el mundo odia SOAP</li>
-            </ul>
-            <p class="fragment">
-                Sin muchas vueltas voy a dar unos tips para que estas REST APIs que desarrollamos no nos saquen canas verdes en el futuro.
-            </p>
+            <section>
+                <h2>Introducci&oacute;n</h2>
+                <p>Hoy d&iacute;a REST se convirti&oacute; en el standard para el desarrollo de API principalemte a:</p>
+                <ul>
+                    <li class="fragment">Es f&aacute;cil de usar</li>
+                    <li class="fragment">Es f&aacute;cil de desarrollar</li>
+                    <li class="fragment">Uso completo del protocolo HTTP</li>
+                    <li class="fragment">Todo el mundo odia SOAP</li>
+                </ul>
+            </section>
+            <section>
+                <img class="wiki noback" src="resources/Wikipedia-in-Sunglasses.png">
+                <h3>Representational State Transfer</h3>
+                <p>
+                    La Transferencia de Estado Representacional (Representational State Transfer) o REST es un estilo de arquitectura software para sistemas 
+                    hipermedia distribuidos como la World Wide Web. El término se originó en el año 2000, en una tesis doctoral sobre la web escrita por Roy Fielding, 
+                    uno de los principales autores de la especificación del protocolo HTTP y ha pasado a ser ampliamente utilizado por la comunidad de desarrollo.
+                </p>
+            </section>
+            <section>
+                <h3>Recurso</h3>
+                <p>
+                    Un concepto importante en REST es la existencia de recursos (elementos de información), que pueden ser accedidos utilizando un identificador global 
+                    (URI). Para manipular estos recursos, los componentes de la red (clientes y servidores) se comunican a través de una interfaz estándar (HTTP) e intercambian 
+                    representaciones de estos recursos (los ficheros que se descargan y se envían)
+                </p>
+            </section>
         </section>
 
         <!-- Example of nested vertical slides -->
@@ -282,7 +297,7 @@ ri magni odio distinctio dolores illum voluptas voluptatem in repellendus eum en
 er":"female","picture_url":"https:\/\/si0.twimg.com\/profile_images\/711293289\/hhdl-twitt\
 er_normal.png","cover_url":null,"location":null,"timezone":-1,"birthday":"1989-09-17 16:27\
 :36","status":"available","created_at":"2013-11-22 16:37:57","redeem_by":"2013-12-22 16:37\
-:57"}
+:57"
                     </code>
                 </pre>
             </section>
@@ -400,16 +415,13 @@ er_normal.png","cover_url":null,"location":null,"timezone":-1,"birthday":"1989-0
             </section>
         </section>
         <section>
-            <section>
-                <h2>Recomendaciones Generales</h2>
-            </section>
-            <section>
-                <img src="resources/cache.jpg">
-            </section>
-            <section>
-                <h3>Usen Respuestas paginadas</h3>
-                <pre>
-                    <code data-trim class="json">
+            <h2>Cache</h2>    
+            <img src="resources/cache.jpg">
+        </section>      
+        <section>
+            <h2>Paginación</h2>
+            <pre>
+                <code data-trim class="json">
 {
     "data": [
         ...
@@ -423,11 +435,48 @@ er_normal.png","cover_url":null,"location":null,"timezone":-1,"birthday":"1989-0
         "next_url": "https://api.example.com/places?page=2&number=12",
     }
 }
+                </code>
+            </pre>
+        </section>
+        <section>
+            <section>
+                <h2>Autenticación</h2>
+            </section>
+            <section>
+                <h3>Basic Authentication</h3>
+                <p>
+                    Para la autenticación basica a traves de HTTP el usuario y el password deben ir en el header Authorization en formato user:password encodeado en 
+                    base 64 y prefijado con la palabra "Basic".
+                </p>
+                <pre>
+                    <code>
+POST /moments/1/gift HTTP/1.1
+Host: api.example.com
+Authorization: Basic vr5HmMkzlxKE70W1y4MibiJUusZwZC25NOVBEx3BD1
+Content-Type: application/json
+
+{ "user_id" : 2 }
                     </code>
                 </pre>
             </section>
             <section>
-                <h3>Usen Oauth 2.0 para la autenticaci&oacute;n</h3>
+                <img class="oauth noback" src="resources/oauth.png">
+                <h3>OAuth 2</h3>
+                <p class="text-80">
+                    OAuth (Open Authorization) es un protocolo que permite flujos simples de autorización para sitios web o aplicaciones informáticas.
+                    Se trata de un protocolo  que permite autorización segura de una API de modo estándar y simple para aplicaciones de escritorio, móviles y web.
+                </p>
+                <p class="text-80">
+                    OAuth permite a un usuario del sitio A compartir su información en el sitio A (proveedor de servicio) con el sitio B (llamado consumidor) sin compartir toda su identidad. 
+                    Para desarrolladores de consumidores, OAuth es un método de interactuar con datos protegidos y publicarlos. Para desarrolladores de proveedores de servicio, OAuth proporciona 
+                    a los usuarios un acceso a sus datos al mismo tiempo que protege las credenciales de su cuenta
+                </p>
+
+            </section>
+            <section>
+                <img src="resources/oauth-schema.png">
+            </section>
+            <section>
                 <pre>
                     <code>
 POST /moments/1/gift HTTP/1.1
@@ -439,17 +488,17 @@ Content-Type: application/json
                     </code>
                 </pre>
             </section>
-            <section>
-                <p class="fragment">
-                    Si utilizan un ORM no serialicen la entidad directamente.<br>
-                    Si Usan acceso directo a datos no serialicen la tabla completa
-                </p>
-                <img src="resources/time.jpg" class="fragment">
-                <p class="fragment">
-                    T&oacute;mense el tiempo de diseñar y construir el json de respuesta que sea homogeneo entre todos sus endpoints.
-                </p>
-            </section>
         </section>
+        <section>
+            <p class="fragment">
+                Si utilizan un ORM no serialicen la entidad directamente.<br>
+                Si Usan acceso directo a datos no serialicen la tabla completa
+            </p>
+            <img src="resources/time.jpg" class="fragment">
+            <p class="fragment">
+                T&oacute;mense el tiempo de diseñar y construir el json de respuesta que sea homogeneo entre todos sus endpoints.
+            </p>
+        </section>    
         <section>
             <h3>Lectura Recomendada</h3>
             <img src="resources/baywh.jpg">
